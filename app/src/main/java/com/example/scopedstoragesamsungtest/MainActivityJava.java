@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -36,11 +37,16 @@ public class MainActivityJava extends AppCompatActivity {
     private static final ExecutorService mExecutorService = Executors.newFixedThreadPool(2);
     private static final String TAG = "MainActivityJava";
 
+    private TextView internalFilePathTV;
+    private TextView mediaStoreFilePathTV;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        internalFilePathTV = (TextView) findViewById(R.id.internal_file_path);
+        mediaStoreFilePathTV = (TextView) findViewById(R.id.mediastore_file_path);
 
         if (isAboveQ()) {
             saveImage(this);
@@ -77,10 +83,24 @@ public class MainActivityJava extends AppCompatActivity {
         Futures.addCallback(settableFuture, new FutureCallback<String>() {
 
             @Override
-            public void onSuccess(@NullableDecl String result) {
+            public void onSuccess(@NullableDecl final String result) {
                 Log.e(TAG, "Successful FilePath: " + result);
                 try {
-                    String externalFilePath = saveToMediaStore(result);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            internalFilePathTV.setText("InternalFilePath: " + result + " \n");
+                        }
+                    });
+                    final String externalFilePath = saveToMediaStore(result);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mediaStoreFilePathTV.setText("MediaStoreFilePath: " + externalFilePath);
+                        }
+                    });
+
                     Log.e(TAG, "Successful Internal FilePath: " + result +
                             " ExternalFilePath: " + externalFilePath);
                 } catch (IOException e) {

@@ -6,19 +6,13 @@
     <TextView
         android:id="@+id/internal_file_path"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#f00"
-        android:text="InternalFilePath: "
-        android:textSize="100sp" />
+        android:layout_height="wrap_content"
+        android:text="InternalFilePath: " />
 
     <TextView
         android:id="@+id/mediastore_file_path"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#00f"
-        android:text="MediaStoreFilePath:"
-        android:textSize="100sp"/>
+        android:layout_height="wrap_content"
+        android:text="MediaStoreFilePath:" />
 
 </LinearLayout>
